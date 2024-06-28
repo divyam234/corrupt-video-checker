@@ -1,0 +1,37 @@
+project_name: video-corrupt-check
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    main: main.go
+    flags: -trimpath
+    ldflags:
+     - -extldflags=-static
+     - -s -w
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    goos:
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+  
+archives:
+  - name_template: "{{ .ProjectName }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - 'README'
+      - Merge pull request
+      - Merge branch
