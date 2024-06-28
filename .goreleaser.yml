@@ -1,4 +1,4 @@
-project_name: video-corrupt-check
+project_name: corrupt-video-check
 
 builds:
   - env:

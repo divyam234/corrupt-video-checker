@@ -1,4 +1,4 @@
-module videocorrupt
+module corruptvideo
 
 go 1.22.0
 
