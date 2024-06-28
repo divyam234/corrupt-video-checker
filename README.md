@@ -2,7 +2,7 @@
 
 ## Usage
 ```sh
-video-corrupt-check -path  input.mp4 -interval 60
+corrupt-video-check -path  input.mp4 -interval 60
 
 ```
 - `FFMPEG` and `FFPROBE` required and should be PATH
