@@ -10,6 +10,7 @@ corrupt-video-check -path  input.mp4 -interval 60
 - Frame extraction will fail if video is corrupted at any timestamp.
 - Works for local and remote file.
 - Default interval is 60 second you can decrease it to make it more accurate for local files.
+- Program will print `corrupted video` if video is corrupted on console.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
