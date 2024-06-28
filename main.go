@@ -96,7 +96,7 @@ func main() {
 	flag.StringVar(&filePath, "path", "", "File Path HTTP or Local")
 	flag.IntVar(&interval, "interval", 60, "Frame Interval in Seconds")
 	flag.IntVar(&timeout, "timeout", 300, "Timeout in Seconds")
-	flag.IntVar(&concurrency, "concurrency", 6, "Timeout in Seconds")
+	flag.IntVar(&concurrency, "concurrency", 6, "Concurrent Frames Processing")
 
 	required := []string{"path"}
 

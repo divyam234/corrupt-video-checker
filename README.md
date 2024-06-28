@@ -2,8 +2,20 @@
 
 ## Usage
 ```sh
-corrupt-video-check -path  input.mp4 -interval 60
+corrupt-video-check -path  input.mp4
 
+```
+```
+Options:
+
+  -concurrency int
+        Concurrent Frames Processing (default 6)
+  -interval int
+        Frame Interval in Seconds (default 60)
+  -path string
+        File Path HTTP or Local
+  -timeout int
+        Timeout in Seconds (default 300)
 ```
 - `FFMPEG` and `FFPROBE` required and should be PATH
 - Checks if remote video file is corrupted by  extracting frames at regular intervals.
