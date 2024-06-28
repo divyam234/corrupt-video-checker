@@ -5,6 +5,7 @@
 video-corrupt-check -path  input.mp4 -interval 60
 
 ```
+- `FFMPEG` and `FFPROBE` required and should be PATH
 - Checks if remote video file is corrupted by  extracting frames at regular intervals.
 - Frame extraction will fail if video is corrupted at any timestamp.
 - Works for local and remote file.
