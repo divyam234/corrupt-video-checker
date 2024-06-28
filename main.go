@@ -11,6 +11,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -26,14 +27,14 @@ type videoInfo struct {
 	} `json:"streams"`
 }
 
-func checkCorruptVideo(inputVideo string, interval int) error {
+func checkCorruptVideo(inputVideo string, interval, timeout, concurrency int) error {
 
 	md5hash := md5.New()
 	md5hash.Write([]byte(inputVideo))
 	hash := md5hash.Sum(nil)
 	hex := hex.EncodeToString(hash)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(timeout))
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "ffprobe", "-v", "error", "-show_format", "-show_streams", "-of", "json", inputVideo)
@@ -54,9 +55,14 @@ func checkCorruptVideo(inputVideo string, interval int) error {
 		}
 	}
 
+	if duration == 0 {
+		return fmt.Errorf("could not get video duration")
+
+	}
+
 	g, _ := errgroup.WithContext(ctx)
 
-	g.SetLimit(6)
+	g.SetLimit(concurrency)
 
 	for i := interval; i < int(duration); i += interval {
 		i := i
@@ -81,12 +87,16 @@ func checkCorruptVideo(inputVideo string, interval int) error {
 
 func main() {
 	var (
-		filePath string
-		interval int
+		filePath    string
+		interval    int
+		timeout     int
+		concurrency int
 	)
 
 	flag.StringVar(&filePath, "path", "", "File Path HTTP or Local")
 	flag.IntVar(&interval, "interval", 60, "Frame Interval in Seconds")
+	flag.IntVar(&timeout, "timeout", 300, "Timeout in Seconds")
+	flag.IntVar(&concurrency, "concurrency", 6, "Timeout in Seconds")
 
 	required := []string{"path"}
 
@@ -105,7 +115,7 @@ func main() {
 			os.Exit(2)
 		}
 	}
-	err := checkCorruptVideo(filePath, interval)
+	err := checkCorruptVideo(filePath, interval, timeout, concurrency)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
